@@ -4,7 +4,6 @@
 
 .app {
   background-color: #fafafa;
-  height: 100vh;
 }
 
 .logo{
@@ -16,4 +15,8 @@
   object-fit: contain;
   padding: 20px;
   border-bottom: 1px solid lightgrey;
+}
+
+.post-img {
+  object-fit: contain;
 }
