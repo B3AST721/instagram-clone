@@ -1,10 +1,11 @@
 import './App.css';
 import { React, useState, useEffect } from 'react';
 import Post from './components/Post';
-import { db } from './firebase';
+import { db, auth } from './firebase';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
+import { Input } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -21,6 +22,28 @@ const style = {
 function App() {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        //When the user logs in...
+        console.log(authUser)
+        setUser(authUser);
+      } else {
+        //When user logs out...
+        setUser(null);
+      }
+    })
+
+    return () => {
+      //Perform cleanup
+      unsubscribe();
+    }
+  }, [user]);
 
   useEffect(() => {
     //Everytime data base changes code is ran
@@ -29,6 +52,19 @@ function App() {
     });
   }, []);
 
+  const signUp = (e) => {
+    e.preventDefault();
+
+    //Alert error message if there is an error in input
+    auth.createUserWithEmailAndPassword(email, password)
+    .then((authUser) => {
+      return authUser.user.updateProfile({
+        displayName: username,
+      })
+    })
+    .catch((error) => alert(error.message))
+  }
+
   return (
     <div className="App">
       <Modal
@@ -36,9 +72,32 @@ function App() {
         onClose={() => setOpen(false)}
       >
         <Box sx={style}>
-          <h2>I am a modal</h2>
+          <form>
+            <img 
+              className='logo modal-logo'
+              src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png?20160616034027'
+              alt=''
+            />
+            <Input
+              placeholder='username'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Input
+              placeholder='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type='submit' onClick={signUp}>Sign Up</Button>
+          </form>
         </Box>
       </Modal>
+
       <div className='header'>
         <img 
           className='logo'
@@ -47,7 +106,11 @@ function App() {
         />
       </div>
 
-      <Button onClick={() => setOpen(true)}>Sign up</Button>
+      {user ? (
+          <Button onClick={() => auth.signOut()}>Log Out</Button>
+        ) : (
+          <Button onClick={() => setOpen(true)}>Sign Up</Button>
+        )}
 
       <h1>HELLO this is some meaningless text that I have placed here rn</h1>
       

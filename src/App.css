@@ -23,3 +23,12 @@
 .post-img {
   object-fit: contain;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-logo {
+  margin: auto;
+}
