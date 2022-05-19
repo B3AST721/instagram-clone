@@ -22,6 +22,7 @@ const style = {
 function App() {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openSignIn, setOpenSignIn] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -55,18 +56,33 @@ function App() {
   const signUp = (e) => {
     e.preventDefault();
 
-    //Alert error message if there is an error in input
-    auth.createUserWithEmailAndPassword(email, password)
+    //Sign up and alert error message if there is an error in input
+    auth
+    .createUserWithEmailAndPassword(email, password)
     .then((authUser) => {
       return authUser.user.updateProfile({
         displayName: username,
       })
     })
     .catch((error) => alert(error.message))
+    //Closes the modal after signup
+    setOpen(false);
+  }
+
+  const signIn = (e) => {
+    e.preventDefault();
+
+    //Sign in and alert error message if there is an error in input
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => alert(error.message))
+    //Closes the modal after sign in
+    setOpenSignIn(false);
   }
 
   return (
     <div className="App">
+      {/* Sign Up */}
       <Modal
         open={open}
         onClose={() => setOpen(false)}
@@ -98,6 +114,33 @@ function App() {
         </Box>
       </Modal>
 
+      {/* Sign In */}
+      <Modal
+        open={openSignIn}
+        onClose={() => setOpenSignIn(false)}
+      >
+        <Box sx={style}>
+          <form>
+            <img 
+              className='logo modal-logo'
+              src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png?20160616034027'
+              alt=''
+            />
+            <Input
+              placeholder='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type='submit' onClick={signIn}>Sign In</Button>
+          </form>
+        </Box>
+      </Modal>
+
       <div className='header'>
         <img 
           className='logo'
@@ -109,7 +152,10 @@ function App() {
       {user ? (
           <Button onClick={() => auth.signOut()}>Log Out</Button>
         ) : (
-          <Button onClick={() => setOpen(true)}>Sign Up</Button>
+          <div className='login-container'>
+            <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+            <Button onClick={() => setOpen(true)}>Sign Up</Button>
+          </div>
         )}
 
       <h1>HELLO this is some meaningless text that I have placed here rn</h1>
