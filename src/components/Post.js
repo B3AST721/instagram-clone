@@ -2,7 +2,7 @@ import React from 'react';
 import '/home/jaheel/instagram/src/Post.css'
 import { Avatar } from '@mui/material';
 
-function Post({username, imageURL, caption}) {
+function Post({username, imageUrl, caption}) {
   return (
     <div className='post'>
         <div className='post-header'>
@@ -13,7 +13,7 @@ function Post({username, imageURL, caption}) {
             />
             <h3>{username}</h3>
         </div>
-        <img className='post-img' src={imageURL} alt='' />
+        <img className='post-img' src={imageUrl} alt='' />
         <h4 className='post-caption'><strong>{username}</strong> {caption}</h4>
     </div>
   )

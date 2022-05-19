@@ -1,11 +1,20 @@
 import './App.css';
-import { React } from 'react';
+import { React, useState, useEffect } from 'react';
 import Post from './components/Post';
+import { db } from './firebase';
 
 function App() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    //Everytime data base changes code is ran
+    db.collection('posts').onSnapshot(snapshot => {
+      setPosts(snapshot.docs.map(doc => doc.data()));
+    });
+  }, []);
+
   return (
     <div className="App">
-      {/* Header */}
       <div className='header'>
         <img 
           className='logo'
@@ -14,10 +23,12 @@ function App() {
         />
       </div>
       <h1>HELLO this is some meaningless text that I have placed here rn</h1>
-      {/* Posts */}
-      <Post username='jaheelwarr' imageURL='https://www.freecodecamp.org/news/content/images/2021/06/Ekran-Resmi-2019-11-18-18.08.13.png' caption='This is the first post' />
-      <Post username='jaheelwarr' imageURL='https://www.freecodecamp.org/news/content/images/2021/06/Ekran-Resmi-2019-11-18-18.08.13.png' caption='This is the second post' />
-      <Post username='jaheelwarr' imageURL='https://www.freecodecamp.org/news/content/images/2021/06/Ekran-Resmi-2019-11-18-18.08.13.png' caption='This is the third post' />
+      
+      {
+        posts.map(post => {
+          return <Post username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
+        })
+      }
     </div>
   );
 }
