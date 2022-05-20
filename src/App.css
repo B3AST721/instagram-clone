@@ -43,3 +43,7 @@ form {
 .signin-signup {
   border: 1px solid lightgray;
 }
+
+.login-upload {
+  text-align: center;
+}
