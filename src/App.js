@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
     //Everytime data base changes code is ran
-    db.collection('posts').onSnapshot(snapshot => {
+    db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
       setPosts(snapshot.docs.map(doc => doc.data()));
     });
   }, []);
