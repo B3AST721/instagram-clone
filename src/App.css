@@ -8,6 +8,7 @@
 
 .logo{
   width: 100px;
+  object-fit: contain;
 }
 
 .header {
@@ -18,6 +19,8 @@
   position: sticky;
   top: 0;
   z-index: 1;
+  display: flex;
+  justify-content: space-between;
 }
 
 .post-img {
@@ -31,4 +34,12 @@ form {
 
 .modal-logo {
   margin: auto;
+}
+
+.posts {
+  padding: 20px;
+}
+
+.signin-signup {
+  border: 1px solid lightgray;
 }

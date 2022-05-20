@@ -50,7 +50,10 @@ function App() {
   useEffect(() => {
     //Everytime data base changes code is ran
     db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      setPosts(snapshot.docs.map(doc => doc.data()));
+      setPosts(snapshot.docs.map(doc => ({
+        id: doc.id,
+        post: doc.data()
+      })));
     });
   }, []);
 
@@ -148,24 +151,26 @@ function App() {
           src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png?20160616034027'
           alt=''
         />
+        <div className='signin-signup'>
+          {user ? (
+            <Button onClick={() => auth.signOut()}>Log Out</Button>
+          ) : (
+            <div className='login-container'>
+              <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+              <Button onClick={() => setOpen(true)}>Sign Up</Button>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <div className='posts'>
+        {
+          posts.map(({id, post}) => {
+            return <Post user={user} postId={id} key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
+          })
+        }
       </div>
 
-      {user ? (
-          <Button onClick={() => auth.signOut()}>Log Out</Button>
-        ) : (
-          <div className='login-container'>
-            <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
-            <Button onClick={() => setOpen(true)}>Sign Up</Button>
-          </div>
-        )}
-
-      <h1>HELLO this is some meaningless text that I have placed here rn</h1>
-      
-      {
-        posts.map(post => {
-          return <Post username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
-        })
-      }
 
       {user?.displayName ? (
         <UploadImage username={user.displayName} />

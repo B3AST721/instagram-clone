@@ -27,3 +27,24 @@
 .post-caption, .post-header {
     padding: 20px;
 }
+
+.comment-box {
+    display: flex;
+    margin-top: 10px;
+    flex-direction: row;
+}
+
+.comments {
+    padding: 20px;
+}
+
+.post-input {
+    flex: 1;
+    border: none;
+    padding: 10;
+    border: 1px solid lightgrey;
+}
+
+.post-button {
+    flex: 0;
+}

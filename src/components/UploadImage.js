@@ -2,6 +2,7 @@ import { React, useState } from 'react'
 import { Button } from '@mui/material';
 import { storage, db } from '../firebase';
 import firebase from 'firebase/compat/app';
+import '/home/jaheel/instagram/src/UploadImage.css';
 
 function UploadImage({username}) {
     const [caption, setCaption] = useState('');
@@ -54,11 +55,11 @@ function UploadImage({username}) {
     }
 
   return (
-    <div>
+    <div className='image-upload'>
         <progress value={progress} max='100' />
         <input placeholder='Enter a caption....' onChange={(e) => setCaption(e.target.value)} type='text'/>
         <input type='file' onChange={handleChange} />
-        <Button className='image-upload' onClick={handleUpload}>
+        <Button className='upload-button' onClick={handleUpload}>
             Upload
         </Button>
     </div>
