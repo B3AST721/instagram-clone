@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { storage, db } from '../firebase';
 import firebase from 'firebase/compat/app';
 
-function UploadImage(username) {
+function UploadImage({username}) {
     const [caption, setCaption] = useState('');
     const [progress, setProgress] = useState(0);
     const [image, setImage] = useState(null);
