@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import { Input } from '@mui/material';
+import UploadImage from './components/UploadImage';
 
 const style = {
   position: 'absolute',
@@ -165,6 +166,12 @@ function App() {
           return <Post username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
         })
       }
+
+      {user?.displayName ? (
+        <UploadImage username={user.displayName} />
+      ): (
+        <h3>Sorry, you need to login to upload</h3>
+      )}
     </div>
   );
 }
